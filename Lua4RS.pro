@@ -13,8 +13,8 @@ linux-* {
 }
 
 win32 {
-    LIBS += -llua53
-    INCLUDEPATH += ../../../lua-5.3.0/src
+    LIBS += -llua
+    INCLUDEPATH += $$LIBS_DIR/include/lua
 }
 
 HEADERS +=  \
