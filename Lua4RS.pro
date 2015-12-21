@@ -27,7 +27,7 @@ linux-* {
 
 win32 {
     LIBS += -llua
-    INCLUDEPATH += $$LIBS_DIR/include/lua
+    INCLUDEPATH += $$INC_DIR/lua
 }
 
 HEADERS +=  \
