@@ -11,7 +11,7 @@
 #include "LuaList.h"
 
 LuaList::LuaList() :
-    _filePath("")
+	_filePath(""), _templateFilePath("")
 {
     _luaList.clear();
 }
@@ -29,9 +29,10 @@ void LuaList::clearList()
     _luaList.clear();
 }
 
-void LuaList::setFilePath(const std::string& path)
+void LuaList::setFilePath(const std::string& path, const std::string &templatepath)
 {
     _filePath = QString::fromStdString(path);
+	_templateFilePath = QString::fromStdString(templatepath);
 
     if(!QDir(_filePath).exists())
         QDir().mkpath(_filePath);
@@ -208,8 +209,18 @@ bool LuaList::load(const QString& name, LuaContainer* container, bool ignoreNoSe
         // check whether file exists
         if(!QFile::exists(luaFileName))
         {
-            std::cerr << "[Lua] can't find Lua file " << luaFileName.toStdString() << std::endl;
-            return false;
+			std::cerr << "[Lua] can't find Lua file, checking templates" << luaFileName.toStdString() << std::endl;
+			QString templatename(_templateFilePath + name);
+			if(QFile::exists(templatename))
+			{
+				if(!QFile::copy(templatename, luaFileName))
+				{
+					return false;
+				}
+			}else{
+				std::cerr << "[Lua] can't find Lua file in templates" << templatename.toStdString() << std::endl;
+				return false;
+			}
         }
 
         std::ifstream file;
@@ -260,7 +271,6 @@ bool LuaList::load(const QString& name, LuaContainer* container, bool ignoreNoSe
 bool LuaList::loadAll()
 {
     std::cout << "[Lua] loading all script files from " << _filePath.toStdString() << std::endl;
-
     // get everything with ".lua"
     QStringList files;
     QDirIterator dirIt(_filePath);
@@ -270,6 +280,17 @@ bool LuaList::loadAll()
             if (QFileInfo(dirIt.filePath()).suffix() == "lua")
                 files.append(dirIt.fileName());
     }
+	std::cout << "[Lua] loading all script files from " << _templateFilePath.toStdString() << std::endl;
+	// get everything with ".lua"
+	QDirIterator dirIt2(_templateFilePath);
+	while (dirIt2.hasNext()) {
+		dirIt2.next();
+		if (QFileInfo(dirIt2.filePath()).isFile())
+			if (QFileInfo(dirIt2.filePath()).suffix() == "lua")
+				if(!files.contains(dirIt2.fileName(), Qt::CaseInsensitive))
+					files.append(dirIt2.fileName());
+	}
+
 
     if(!_luaList.empty())
         // clear list before loading
@@ -386,7 +407,7 @@ void LuaList::rename(const QString& oldName, const QString& newName)
 void LuaList::getFileNames(const QString& name, QString& luaFileName, QString& settingsFileName)
 {
     luaFileName = _filePath + name;
-    settingsFileName =  luaFileName + QString(".ini");
+	settingsFileName =  luaFileName + QString(".ini");
 }
 
 void LuaList::dump()

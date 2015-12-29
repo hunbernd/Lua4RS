@@ -21,6 +21,7 @@
 
 LuaCore::LuaCore() :
     _folderName ("Lua4RS"),
+	_templateFolderName ("luatemplates"),
     _mutex      ("Lua4RS"),
     _luaList    (new LuaList()),
     _notify     (new Lua4RSNotify()),
@@ -35,9 +36,10 @@ LuaCore::LuaCore() :
     luaL_openlibs(L);
 
     _path = rsAccounts->PathAccountDirectory() + "/" + _folderName + "/";
+	_templatepath = rsAccounts->PathDataDirectory() + "/" + _templateFolderName + "/";
 
     // load codes
-    _luaList->setFilePath(_path);
+	_luaList->setFilePath(_path, _templatepath);
     if(_luaList->loadAll())
         std::cout << "[Lua] loaded " << _luaList->size() << " Lua script(s)" << std::endl;
     else

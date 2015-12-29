@@ -36,7 +36,7 @@ public:
     size_t size();
     void sort();
 
-    void setFilePath(const std::string& path);
+	void setFilePath(const std::string& path, const std::string& templatepath);
 
     // debug
     void dump();
@@ -46,12 +46,13 @@ private:
     bool save(LuaContainer* container);
     bool remove(LuaContainer* container);
 
-    void getFileNames(const QString& name, QString& luaFileName, QString& settingsFileName);
+	void getFileNames(const QString& name, QString& luaFileName, QString& settingsFileName);
 
     void clearList();
 
     LuaContainerList _luaList;
     QString _filePath;
+	QString _templateFilePath;
 };
 
 #endif // LUALIST_H

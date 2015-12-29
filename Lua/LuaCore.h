@@ -64,7 +64,9 @@ private:
     void addFunctionToLuaAndTw(int tableTop, const std::string &namespc, QTreeWidgetItem* item, int (*f)(lua_State*), const std::string& name, const QString& hint);
 
     const std::string _folderName;
+	const std::string _templateFolderName;
     std::string _path;
+	std::string _templatepath;
 
     lua_State* L;
 
