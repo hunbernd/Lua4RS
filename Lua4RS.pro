@@ -51,7 +51,8 @@ HEADERS +=  \
     Lua/Trigger/LuaTriggerOnce.h \
     service/p3Lua4RS.h \
     interface/L4RInterface.h \
-    helper.h
+    helper.h \
+    interface.h
 
 SOURCES +=  \
     Lua4RSPlugin.cpp \
@@ -76,7 +77,8 @@ SOURCES +=  \
     Lua/LuaToRSServerConfig.cpp \
     Lua/LuaToRSDiscovery.cpp \
     Lua/LuaToRSChat.cpp \
-    helper.cpp
+    helper.cpp \
+    interface.cpp
 
 FORMS += \
     gui/Lua4RSWidget.ui \

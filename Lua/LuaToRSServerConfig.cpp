@@ -2,6 +2,7 @@
 
 #include "LuaCore.h"
 #include "LuaToRS.h"
+#include "interface.h"
 
 extern "C" {
 #include <lua.h>
@@ -14,7 +15,7 @@ extern "C" {
     //virtual uint32_t getOperatingMode() = 0;
     int config_getOperatingMode(lua_State* L)
     {
-        const uint32_t opMode = rsConfig->getOperatingMode();
+		const uint32_t opMode = interface::get().mConfig->getOperatingMode();
         lua_pushinteger(L, opMode);
 
         std::string opModeS = "";
@@ -89,7 +90,7 @@ extern "C" {
             // somthing went wrong
             return 0;
 
-        rsConfig->setOperatingMode(opMode);
+		interface::get().mConfig->setOperatingMode(opMode);
         return 0;
     }
 
@@ -106,7 +107,7 @@ extern "C" {
         int kbDown = luaL_checkinteger(L, 1);
         int kbUp = luaL_checkinteger(L, 2);
 
-        rsConfig->SetMaxDataRates(kbDown, kbUp);
+		interface::get().mConfig->SetMaxDataRates(kbDown, kbUp);
         return 0;
     }
 
@@ -114,7 +115,7 @@ extern "C" {
     int config_getMaxDataRates(lua_State* L)
     {
         int kbDown, kbUp;
-        rsConfig->GetMaxDataRates(kbDown, kbUp);
+		interface::get().mConfig->GetMaxDataRates(kbDown, kbUp);
         lua_pushinteger(L, kbDown);
         lua_pushinteger(L, kbUp);
         return 2;
@@ -124,7 +125,7 @@ extern "C" {
     int config_getCurrentDataRates(lua_State* L)
     {
         float kbDown, kbUp;
-        rsConfig->GetCurrentDataRates(kbDown, kbUp);
+		interface::get().mConfig->GetCurrentDataRates(kbDown, kbUp);
         lua_pushnumber(L, kbDown);
         lua_pushnumber(L, kbUp);
         return 2;

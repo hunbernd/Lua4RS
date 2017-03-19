@@ -18,6 +18,7 @@
 #include "LuaToRSServerConfig.cpp"
 
 #include "helper.h"
+#include "interface.h"
 
 LuaCore::LuaCore() :
     _folderName ("Lua4RS"),
@@ -35,8 +36,8 @@ LuaCore::LuaCore() :
     L = luaL_newstate();
     luaL_openlibs(L);
 
-    _path = rsAccounts->PathAccountDirectory() + "/" + _folderName + "/";
-	_templatepath = rsAccounts->PathDataDirectory() + "/" + _templateFolderName + "/";
+	_path = interface::get().mAccounts->PathAccountDirectory() + "/" + _folderName + "/";
+	_templatepath = interface::get().mAccounts->PathDataDirectory() + "/" + _templateFolderName + "/";
 
     // load codes
 	_luaList->setFilePath(_path, _templatepath);

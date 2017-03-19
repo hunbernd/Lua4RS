@@ -8,6 +8,7 @@
 #include "interface/L4RInterface.h"
 
 #include "helper.h"
+#include "interface.h"
 
 Lua4RSNotify::Lua4RSNotify()
 {
@@ -46,7 +47,7 @@ void Lua4RSNotify::notifyChatMessage(const ChatMessage &msg)
     e.dataParm->setValue("strmsg", QString::fromUtf8(msg2.c_str()));
     RsGxsId gxsid = msg.lobby_peer_gxs_id;
     RsIdentityDetails gxsIdDetails;
-    rsIdentity->getIdDetails(gxsid, gxsIdDetails);
+	interface::get().mIdentity->getIdDetails(gxsid, gxsIdDetails);
     e.dataParm->setValue("strgxsid", QString::fromUtf8(gxsid.toStdString().c_str()));
     e.dataParm->setValue("strnick", QString::fromUtf8(gxsIdDetails.mNickname.c_str()));
 

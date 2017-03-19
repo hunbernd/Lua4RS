@@ -15,6 +15,7 @@
 #include "interface/L4RInterface.h"
 #include "Lua/LuaCore.h"
 #include "service/p3Lua4RS.h"
+#include "interface.h"
 
 #define LUA_ICON_LINK ":/images/lua_logo.png"
 
@@ -57,8 +58,6 @@ Lua4RSPlugin::Lua4RSPlugin()
 {
     _icon = NULL;
     _mainpage = NULL;
-    _notify = NULL;
-    _peers = NULL;
     _pluginHandler = NULL;
     _service = NULL;
 }
@@ -79,8 +78,8 @@ void Lua4RSPlugin::getPluginVersion(int &major, int &minor, int &build, int &svn
 void Lua4RSPlugin::setInterfaces(RsPlugInInterfaces &interfaces)
 {
     // get stuff
-    _peers = interfaces.mPeers;
-    _notify = interfaces.mNotify;
+	RsNotify* _notify = interfaces.mNotify;
+	interface::init(interfaces);
 
     // setup other stuff - pqi service is nor running yet -> don't use interface pointer
     LuaCore* lc = dynamic_cast<p3Lua4RS*>(rs_pqi_service())->getCore();

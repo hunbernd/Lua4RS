@@ -1,5 +1,6 @@
 #include "LuaToRS.h"
 #include "interface/L4RInterface.h"
+#include "interface.h"
 
 extern "C" {
 #include <lua.h>
@@ -134,7 +135,7 @@ extern "C" {
         const uint64_t fileSize = luaL_checknumber(L, 3);
 
         std::list<RsPeerId> srcIds;
-        const bool ok = rsFiles->FileRequest(fileName, fileHash, fileSize, "", RS_FILE_REQ_ANONYMOUS_ROUTING, srcIds);
+		const bool ok = interface::get().mFiles->FileRequest(fileName, fileHash, fileSize, "", RS_FILE_REQ_ANONYMOUS_ROUTING, srcIds);
 
         lua_pushboolean(L, (int)ok);
         return 1;

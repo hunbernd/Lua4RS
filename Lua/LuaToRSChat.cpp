@@ -2,6 +2,7 @@
 
 #include "LuaCore.h"
 #include "LuaToRS.h"
+#include "interface.h"
 
 extern "C" {
 #include <lua.h>
@@ -17,7 +18,7 @@ extern "C" {
         const std::string s = luaL_checkstring(L, 1);
         const ChatId id = ChatId(s);
         const std::string msg = luaL_checkstring(L, 2);
-        const bool ret = rsMsgs->sendChat(id, msg);
+		const bool ret = interface::get().mMsgs->sendChat(id, msg);
         lua_pushboolean(L, ret);
         return 1;
     }

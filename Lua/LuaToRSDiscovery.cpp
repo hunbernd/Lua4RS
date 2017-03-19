@@ -3,6 +3,7 @@
 
 #include "LuaCore.h"
 #include "LuaToRS.h"
+#include "interface.h"
 
 extern "C" {
 #include <lua.h>
@@ -18,7 +19,7 @@ extern "C" {
 
         const RsPeerId id = RsPeerId(luaL_checkstring(L, 1));
         std::list<RsPeerId> friends;
-        rsDisc->getDiscFriends(id, friends);
+		interface::get().mDisc->getDiscFriends(id, friends);
 
         lua_newtable(L);
         int top = lua_gettop(L);
@@ -38,7 +39,7 @@ extern "C" {
 
         const RsPgpId id = RsPgpId(luaL_checkstring(L, 1));
         std::list<RsPgpId> pgp_friends;
-        rsDisc->getDiscPgpFriends(id, pgp_friends);
+		interface::get().mDisc->getDiscPgpFriends(id, pgp_friends);
 
         lua_newtable(L);
         int top = lua_gettop(L);
@@ -57,7 +58,7 @@ extern "C" {
 
         const RsPeerId id = RsPeerId(luaL_checkstring(L, 1));
         std::string version;
-        if(!rsDisc->getPeerVersion(id, version))
+		if(!interface::get().mDisc->getPeerVersion(id, version))
             return 0;
 
         lua_pushstring(L, version.c_str());
@@ -69,7 +70,7 @@ extern "C" {
     int disc_getWaitingDiscCount(lua_State* L)
     {
         unsigned int sendCount, recvCount;
-        rsDisc->getWaitingDiscCount(&sendCount, &recvCount);
+		interface::get().mDisc->getWaitingDiscCount(&sendCount, &recvCount);
         lua_pushnumber(L, recvCount);
         lua_pushnumber(L, sendCount);
         return 2;
